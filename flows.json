@@ -1,0 +1,118 @@
+[
+    {
+        "id": "e7f0ff3d84f19323",
+        "type": "tab",
+        "label": "IoT project flow",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "43035995ba2256c9",
+        "type": "mqtt in",
+        "z": "e7f0ff3d84f19323",
+        "name": "",
+        "topic": "/patientBioData/bio",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "2bda202f58d9d54a",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 210,
+        "y": 100,
+        "wires": [
+            [
+                "fd6e614407b46640"
+            ]
+        ]
+    },
+    {
+        "id": "45c608e4c8862aea",
+        "type": "mqtt in",
+        "z": "e7f0ff3d84f19323",
+        "name": "",
+        "topic": "/patientData/+",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "2bda202f58d9d54a",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d12ff8f5a9353f8b",
+        "type": "mysql",
+        "z": "e7f0ff3d84f19323",
+        "mydb": "58173b4eb5fb8781",
+        "name": "Patients DB",
+        "x": 710,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fd6e614407b46640",
+        "type": "function",
+        "z": "e7f0ff3d84f19323",
+        "name": "Insert patient data in DB",
+        "func": "var newMsg = {};\nnewMsg.payload = {};\nnewMsg.payload.id = msg.payload.id;\nnewMsg.payload.name = msg.payload.name;\nnewMsg.payload.surname = msg.payload.surname;\nnewMsg.payload.age = msg.payload.age;\nnewMsg.payload.sex = msg.payload.sex;\nnewMsg.topic = \"INSERT INTO patients VALUES (:id, :name, :surname, :age, :sex) ON DUPLICATE KEY UPDATE `name`=:name, `surname`=:surname, `age`=:age, `sex`=:sex;\"\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 80,
+        "wires": [
+            [
+                "d12ff8f5a9353f8b"
+            ]
+        ]
+    },
+    {
+        "id": "2bda202f58d9d54a",
+        "type": "mqtt-broker",
+        "name": "IoT broker",
+        "broker": "212.78.1.205",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "58173b4eb5fb8781",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "192.168.50.132",
+        "port": "3306",
+        "db": "HealthCareSystem",
+        "tz": "",
+        "charset": "UTF8"
+    }
+]
