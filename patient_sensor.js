@@ -337,7 +337,7 @@ class Patient{
             
             this.patientData.publishData();
             //console.log("Published a new patient data record");
-        }, 10000);
+        }, 5000);
     }
 }
 
